@@ -91,6 +91,9 @@
 
     function scheduleAdvance(){
       clearAdvance();
+      // 暂停状态下不排自动续播：拖动进度条会触发 timeupdate，
+      // 若无此判断，定时器到点后会自行 play() 下一句。
+      if(audio.paused) return;
       if(segmentEnd && idx>=0){
         const ms = Math.max(0, (segmentEnd - audio.currentTime) * 1000);
         segmentTimer = setTimeout(()=>{
